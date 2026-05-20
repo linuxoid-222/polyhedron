@@ -1,4 +1,4 @@
-from math import pi
+from math import pi,sqrt
 from functools import reduce
 from operator import add
 from common.r3 import R3
@@ -167,3 +167,35 @@ class Polyedr:
                 e.shadow(f)
             for s in e.gaps:
                 tk.draw_line(e.r3(s.beg), e.r3(s.fin))
+
+
+    def special_edges_length_sum(self):
+        """
+        Вычисляет сумму длин рёбер, у которых середина и ровно один
+        из концов являются  точками подход. под усл (x > -2).
+        """
+        import math
+        total_length = 0.0
+
+        for e in self.edges:
+            # Координаты X концов ребра
+            x_beg = e.beg.x
+            x_fin = e.fin.x
+            
+            # Координата X середины ребра
+            x_mid = (x_beg + x_fin) / 2.0
+
+            # Проверяем точки на условие "x > -2"
+            is_beg_good = x_beg > -2.0
+            is_fin_good = x_fin > -2.0
+            is_mid_good = x_mid > -2.0
+
+            if (is_beg_good != is_fin_good) and is_mid_good:
+                dx = e.fin.x - e.beg.x
+                dy = e.fin.y - e.beg.y
+                dz = e.fin.z - e.beg.z
+                edge_length = sqrt(dx**2 + dy**2 + dz**2)
+                
+                total_length += edge_length
+
+        return total_length
