@@ -11,7 +11,10 @@ try:
         print("=============================================================")
         print(f"Начало работы с полиэдром '{name}'")
         start_time = time()
-        Polyedr(f"data/{name}.geom").draw(tk)
+        poly = Polyedr(f"data/{name}.geom")
+        special_sum = poly.special_edges_length_sum()
+        print(f"Сумма длин специальных рёбер: {special_sum:.4f}")
+        poly.draw(tk)
         delta_time = time() - start_time
         print(f"Изображение полиэдра '{name}' заняло {delta_time} сек.")
         input("Hit 'Return' to continue -> ")
