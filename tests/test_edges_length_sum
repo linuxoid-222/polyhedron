@@ -1,0 +1,39 @@
+import unittest
+from math import sqrt, isclose
+from common.r3 import R3
+from shadow.polyedr import Edge, Polyedr
+
+class TestSpecialEdges(unittest.TestCase):
+
+    def test_special_edges_length_sum(self):
+        # Создаем объект полиэдра в обход __init__, чтобы не читать из файла
+        poly = Polyedr.__new__(Polyedr)
+        
+        
+        # ПОДХОДИТ: 
+        # Длина по x = 4.0 (от -3 до 1)
+        e1 = Edge(R3(-3.0, 0.0, 0.0), R3(1.0, 0.0, 0.0)) 
+        
+        #  НЕ подходит: 
+        e2 = Edge(R3(-3.0, 0.0, 0.0), R3(-4.0, 0.0, 0.0))
+        
+        # НЕ подходит: 
+        e3 = Edge(R3(0.0, 0.0, 0.0), R3(2.0, 0.0, 0.0))
+        
+        # НЕ подходит: 
+        e4 = Edge(R3(-5.0, 0.0, 0.0), R3(-1.0, 0.0, 0.0))
+        
+        # ПОДХОДИТ: 
+        # x_beg = -1.0, x_fin = -2.5, x_mid = -1.75 ( > -2 )
+        # Длина = sqrt( (-1 - (-2.5))^2 + 4.0^2 ) = sqrt( 1.5^2 + 16 ) = sqrt(18.25)
+        e5 = Edge(R3(-1.0, 0.0, 0.0), R3(-2.5, 4.0, 0.0)) 
+        
+        poly.edges = [e1, e2, e3, e4, e5]
+        
+        # Ожидаемая сумма длин подходящих рёбер (e1 и e5)
+        expected_sum = 4.0 + sqrt(18.25)
+
+        self.assertTrue(isclose(poly.special_edges_length_sum(), expected_sum, rel_tol=1e-9))
+
+if __name__ == '__main__':
+    unittest.main()
