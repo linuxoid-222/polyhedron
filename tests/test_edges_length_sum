@@ -6,9 +6,9 @@ from shadow.polyedr import Edge, Polyedr
 class TestSpecialEdges(unittest.TestCase):
 
     def test_special_edges_length_sum(self):
-        # Создаем объект полиэдра в обход __init__, чтобы не читать из файла
-        poly = Polyedr.__new__(Polyedr)
         
+        poly = Polyedr.__new__(Polyedr)
+        poly.c = 1.0
         
         # ПОДХОДИТ: 
         # Длина по x = 4.0 (от -3 до 1)
